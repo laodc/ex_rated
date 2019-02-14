@@ -1,4 +1,6 @@
 /_build
 /deps
+/doc
+/bench/snapshots
 erl_crash.dump
 *.ez

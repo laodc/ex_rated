@@ -8,6 +8,8 @@ ExRated is:
 
 You can learn more about the concept for this rate limiter in [ the Token Bucket article on Wikipedia](http://en.wikipedia.org/wiki/Token_bucket)
 
+If you use the PhoenixFramework there is also a great blog post on [Rate Limiting a Phoenix API](https://blog.danielberkompas.com/2015/06/16/rate-limiting-a-phoenix-api) by [danielberkompas](https://github.com/danielberkompas) describing how to write a plug
+to use ExRated in your own API. Its fast and its easy.
 
 ## Usage
 
@@ -63,7 +65,7 @@ You can use ExRated in your projects in two steps:
 
     ```elixir
     def deps do
-      [{:ex_rated, "~> 1.2.1"}]
+      [{:ex_rated, "~> 1.2"}]
     end
     ```
 
@@ -104,28 +106,48 @@ mix test --no-start
 
 ## Is it fast?
 
-You can use the `Benchwarmer` library to do a quick performance test.
+You can use the `Benchfella` library to do a quick performance test.
 
-Temporarily add `Benchwarmer` to your dependencies in `mix.exs` as shown below and run `mix deps.get` and `iex -S mix`:
+On a 2017 Macbook Pro I can do 1,000,000 checks, averaging 2.31 µs/op.
 
-```
-defp deps do
-  [
-    {:ex2ms, "~> 1.3.0"},
-    {:benchwarmer, "~> 0.0.2"}
-  ]
-end
-```
+```text
+$ mix bench
+Settings:
+  duration:      1.0 s
 
-On my 2014 Macbook Pro I can do 262,000 checks in about 1.2 seconds.
+## BasicBench
+[15:09:49] 1/1: Basic Bench
 
-```elixir
-iex> Benchwarmer.benchmark fn -> {:ok, _} = ExRated.check_rate("my-bucket", 1000000, 10_000_000) end
-*** #Function<20.90072148/0 in :erl_eval.expr/5> ***
-1.2 sec   262K iterations   4.9 μs/op
+Finished in 2.57 seconds
+
+## BasicBench
+benchmark na iterations   average time
+Basic Bench     1000000   2.31 µs/op
 ```
 
 ## Changes
+
+### v1.3.2
+
+  - Automatic application inference
+  - Update ex_doc dependency
+  - Update minimum Elixer to 1.6+
+  - Update "Rate Limiting" blogpost URL reference
+
+### v1.3.1
+
+  - Update `ex2ms` to v1.5
+
+### v1.3.0
+
+  - Fix compilation warnings. [@walkr]
+  - Start app properly with no args [@walkr]
+  - Modify start_link to be callable by `Supervisor.Spec.worker` fun [@walkr]
+
+### v1.2.2
+
+  - Update Elixir to v1.2
+  - Update `ex2ms` to v1.4
 
 ### v1.2.1
 
